@@ -1,19 +1,20 @@
 defmodule GakiBot do
-  def about_command do
-      text = """
-      __Cosas publicas__
-      Cosas publicas
-      """
+  alias GakiBot.Store.RecipeStore
 
-      {text, parse_mode: "Markdown"}
+  def about_command do
+    text = """
+    __Cosas publicas__
+    Cosas publicas
+    """
+
+    {text, parse_mode: "Markdown"}
   end
 
-  # defp about_command_private do
-  #   text = """
-  #   __Cosas privadas__
-  #   Cosas privadas
-  #   """
+  def create_recipe(recipe) do
+    recipe
+    |> Map.new()
+    |> RecipeStore.insert_recipe()
 
-  #   {text, parse_mode: "Markdown"}
-  # end
+    {"Recipe in", parse_mode: "Markdown"}
+  end
 end

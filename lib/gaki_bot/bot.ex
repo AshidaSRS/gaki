@@ -7,12 +7,10 @@ defmodule GakiBot.Bot do
 
   command("start")
   command("help", description: "Print the bot's help")
-  command("help", description: "Print the bot's help")
-
+  command("recipe")
 
   middleware(ExGram.Middleware.IgnoreUsername)
   middleware(GakiBot.Middlewares.RegisterUser)
-
 
   def bot(), do: @bot
 
@@ -23,5 +21,12 @@ defmodule GakiBot.Bot do
 
   def handle({:command, :help, _msg}, context) do
     answer(context, "Here is your help: ")
+  end
+
+  def handle({:command, :recipe, %{text: message}}, context) do
+    IO.inspect(message)
+    GakiBot.create_recipe(message)
+    IO.puts("va")
+    answer(context, message)
   end
 end
