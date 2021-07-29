@@ -14,6 +14,8 @@ defmodule GakiBot.Model.Recipe do
   @fields [:recipe]
   @required_fields [:recipe]
   def insert_changeset(%{} = recipe_map) do
+    IO.inspect(recipe_map)
+
     %Recipe{}
     |> Changeset.cast(recipe_map, @fields)
     |> Changeset.validate_required(@required_fields)

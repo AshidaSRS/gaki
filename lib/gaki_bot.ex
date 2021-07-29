@@ -11,8 +11,8 @@ defmodule GakiBot do
   end
 
   def create_recipe(recipe) do
-    recipe
-    |> Map.new()
+    Map.new()
+    |> Map.put(:recipe, recipe)
     |> RecipeStore.insert_recipe()
 
     {"Recipe in", parse_mode: "Markdown"}
