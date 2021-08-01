@@ -8,9 +8,11 @@ defmodule GakiBot.Application do
   @impl true
   def start(_type, _args) do
     token = ExGram.Config.get(:ex_gram, :token)
+
     children = [
       ExGram,
       {GakiBot.Repo, []},
+      GakiBot.Steps,
       {GakiBot.Bot, [method: :polling, token: token]}
     ]
 
