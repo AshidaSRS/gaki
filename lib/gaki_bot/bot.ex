@@ -40,7 +40,7 @@ defmodule GakiBot.Bot do
   end
 
   def handle({:callback_query, %{data: "start", from: %{id: user_id}}}, context) do
-    {message, opts} = GakiBot.apply_step(:start, user_id)
+    {message, opts} = GakiBot.apply_step(:start, user_id, nil, nil)
     answer(context, message, opts)
   end
 

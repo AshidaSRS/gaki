@@ -55,16 +55,12 @@ defmodule GakiBot.Steps do
         first_gen: first_gen,
         second_gen: second_gen
       }) do
-    IO.inspect(step)
-    IO.inspect(content)
-
     case step do
       :start ->
         new_uuid = UUID.uuid4()
         ops = %{:step => step, :user_id => user_id}
         step_content = struct(StepContent, ops)
         new_first_gen = Map.put(first_gen, new_uuid, step_content)
-        IO.inspect(new_first_gen)
         {:reply, new_uuid, %{first_gen: new_first_gen, second_gen: second_gen}}
 
       :end ->
@@ -81,7 +77,6 @@ defmodule GakiBot.Steps do
 
       _ ->
         step_name = step |> to_string() |> String.split("_") |> List.last()
-
         ops = %{String.to_atom(step_name) => content, :step => step}
 
         new_ops =
@@ -101,6 +96,9 @@ defmodule GakiBot.Steps do
         %{first_gen: first_gen, second_gen: second_gen} = state
       ) do
     case get_from_generations(uuid, first_gen, second_gen) do
+      %StepContent{step: :end} ->
+        {:reply, {:error, :not_found}, state}
+
       %StepContent{list: list, description: description, tips: tips, tags: tags, step: step} =
           data ->
         new_first_gen = Map.put(first_gen, uuid, data)
@@ -120,6 +118,9 @@ defmodule GakiBot.Steps do
       ) do
     case get_from_generations_by_user_id(user_id, first_gen, second_gen) do
       [] ->
+        {:reply, {:error, :not_found}, state}
+
+      {_key, %{step: :end}} ->
         {:reply, {:error, :not_found}, state}
 
       {key, _value} ->
@@ -150,7 +151,7 @@ defmodule GakiBot.Steps do
   defp get_by_user(user_id, first_gen) do
     first_gen
     |> Enum.filter(fn {_, step_content} ->
-      step_content.user_id == user_id
+      step_content.user_id == user_id && step_content.step != :end
     end)
   end
 end

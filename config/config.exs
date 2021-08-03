@@ -2,14 +2,8 @@ import Config
 
 config :gaki_bot, GakiBot.Repo,
   database: "gaki_bot_repo",
-  username: "user",
-  password: "pass",
-  hostname: "localhost"
-
-config :gaki_bot, GakiBot.Repo,
-  database: "gaki_bot_repo",
-  username: "ashida",
-  password: "ashida",
+  username: "x311680",
+  password: "x311680",
   hostname: "localhost"
 
 config :gaki_bot,
